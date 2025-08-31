@@ -1,12 +1,183 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tempest Palimpsest</title>
+  <style>
+    /* Reset everything */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: hidden;
+      background: url('parchment.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #3b2e2a;
+    }
+
+    /* Fullscreen video */
+    #background-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 0;
+      transition: opacity 2s ease;
+    }
+
+    /* Script overlay */
+    #overlay-text {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+      background-color: rgba(255, 255, 255, 0.4);
+      overflow-y: auto;
+      z-index: 1;
+    }
+
+    .character {
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-top: 20px;
+    }
+
+    .dialogue {
+      margin-left: 40px;
+      margin-bottom: 10px;
+    }
+
+    .stage {
+      font-style: italic;
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    /* Pulsing rabbit hole button */
+    #rabbit-hole-button {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, black 0%, transparent 70%);
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 2;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.1); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    /* Rabbit hole overlay */
+    #rabbit-hole {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+      background: radial-gradient(circle at center, black 0%, #3b2e2a 80%);
+      color: white;
+      overflow-y: auto;
+      z-index: 3;
+    }
+
+    #rabbit-hole h1, #rabbit-hole p {
+      margin: 0 0 1em 0;
+      padding: 0;
+    }
+
+    #rabbit-hole a {
+      color: lightblue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+  </style>
 </head>
 <body>
-    <h1> mratticusforst </h1>
-    <p>blah blah blah</p>
+
+  <!-- Fullscreen opening video -->
+  <video autoplay muted playsinline id="background-video">
+    <source src="ship.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Script overlay -->
+  <div id="overlay-text">
+    <div class="stage">ACT 1, SCENE 1 – A storm at sea</div>
+    
+    <div class="character">BOATSWAIN</div>
+    <div class="dialogue">What ho! The wind blows fierce. Sailors, take heed!</div>
+    
+    <div class="character">SAILOR</div>
+    <div class="dialogue">Aye, sir! The deck is slick!</div>
+
+    <div class="stage">[Thunder roars. Waves crash over the ship.]</div>
+
+    <!-- Rabbit hole button -->
+    <div id="rabbit-hole-button"></div>
+  </div>
+
+  <!-- Fullscreen rabbit hole content -->
+  <div id="rabbit-hole">
+    <h1>Mind-Rabbit Hole 1</h1>
+    <p>The town I grew up in did not get much rain. Each year, it rained less and less. 500mm. 300mm. Then 100mm. Then 50mm. Finally, we hit 0mm. It was a farming town.</p>
+    <p>I remember the town meetings we had about it. What to do and what caused it. It was always a big debate. I never liked going. 
+        One time this old burly man, Llewyn, I think his name was, stood up and said enough is enough. He said that the drought was because we’d gone and pissed off God and that we’d let evil cheerfully skip into our town with all this machinery. He said it was a silver serpent under a flower, ready to strike.
+        The following night I prayed. I prayed so hard my nose bled but I asked for rain.
+        It didn’t come the next day. Or the one after. On the third day it did rain. The fourth and fifth too. It rained so hard the streets had turned to rivers and all the clouds had burst open. With no other choice, we left. 
+        
+    <p>It wasn’t until much later, 20 or 30 years I think, that there was a commission into some shady practices of the coalition. It was found that they had induced heavy rainfall on many off-world farming colonies, in attempt to get more people into the main planets and cities.</p>
+    <p><a id="exit-rabbit">Climb out of the hole</a></p>
+  </div>
+
+  <script>
+    const video = document.getElementById('background-video');
+    const overlayText = document.getElementById('overlay-text');
+    const rabbitHole = document.getElementById('rabbit-hole');
+    const rabbitButton = document.getElementById('rabbit-hole-button');
+    const exitRabbit = document.getElementById('exit-rabbit');
+
+    // Video fades and shows script overlay
+    video.addEventListener('ended', () => {
+      video.style.opacity = 0;
+      setTimeout(() => {
+        overlayText.style.display = 'block';
+      }, 2000);
+    });
+
+    // Enter rabbit hole
+    rabbitButton.addEventListener('click', () => {
+      overlayText.style.display = 'none';
+      rabbitHole.style.display = 'block';
+    });
+
+    // Exit rabbit hole
+    exitRabbit.addEventListener('click', () => {
+      rabbitHole.style.display = 'none';
+      overlayText.style.display = 'block';
+    });
+  </script>
+
 </body>
 </html>
