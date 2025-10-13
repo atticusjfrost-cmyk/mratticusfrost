@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 90vw;
+            height: 90vh;
+            max-width: 1200px;
+            max-height: 800px;
+        }
+
+        #target {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-image: url('target-image.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        #targetVideo {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #targetVideo.show {
+            opacity: 1;
+        }
+
+        #target.highlight {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 10px 50px rgba(255,255,255,0.3);
+        }
+
+        #draggable {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-image: url('draggable-image.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            top: 20%;
+            left: 20%;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            z-index: 10;
+        }
+
+        #draggable:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+
+        #draggable.inserting {
+            animation: insertDisk 0.8s ease-out forwards;
+            cursor: default;
+        }
+
+        @keyframes insertDisk {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(0.8) translateZ(-20px);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0.3) translateZ(-50px);
+                opacity: 0;
+            }
+        }
+
+        #message {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+        }
+
+        #message.show {
+            opacity: 1;
+        }
+
+        .instruction {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        #fullscreenVideoContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #fullscreenVideoContainer.active {
+            display: flex;
+        }
+
+        #bootVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div class="instruction">Drag the CD into the disk drive</div>
+        <div id="target">
+            <video id="targetVideo" preload="auto">
+                <source src="target-video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div id="draggable"></div>
+        <div id="message">Success!</div>
+    </div>
+
+    <div id="fullscreenVideoContainer">
+        <video id="bootVideo" preload="auto">
+            <source src="boot.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        const draggable = document.getElementById('draggable');
+        const target = document.getElementById('target');
+        const message = document.getElementById('message');
+        const fullscreenContainer = document.getElementById('fullscreenVideoContainer');
+        const bootVideo = document.getElementById('bootVideo');
+        
+        let isDragging = false;
+        let offsetX, offsetY;
+        let hasInserted = false;
+
+        draggable.addEventListener('mousedown', startDrag);
+        draggable.addEventListener('touchstart', startDrag);
+
+        function startDrag(e) {
+            if (hasInserted) return;
+            
+            isDragging = true;
+            const touch = e.touches ? e.touches[0] : e;
+            const rect = draggable.getBoundingClientRect();
+            offsetX = touch.clientX - rect.left - rect.width / 2;
+            offsetY = touch.clientY - rect.top - rect.height / 2;
+            
+            draggable.style.transition = 'none';
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            document.addEventListener('touchend', stopDrag);
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            const touch = e.touches ? e.touches[0] : e;
+            
+            draggable.style.left = (touch.clientX - draggable.parentElement.offsetLeft - offsetX) + 'px';
+            draggable.style.top = (touch.clientY - draggable.parentElement.offsetTop - offsetY) + 'px';
+            
+            // Check if over target
+            if (isOverTarget()) {
+                target.classList.add('highlight');
+            } else {
+                target.classList.remove('highlight');
+            }
+        }
+
+        function stopDrag() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            draggable.style.transition = 'transform 0.2s ease';
+            
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('touchmove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchend', stopDrag);
+            
+            // Check if dropped on target
+            if (isOverTarget() && !hasInserted) {
+                insertDisk();
+            } else {
+                target.classList.remove('highlight');
+            }
+        }
+
+        function isOverTarget() {
+            const dragRect = draggable.getBoundingClientRect();
+            const targetRect = target.getBoundingClientRect();
+            
+            const dragCenterX = dragRect.left + dragRect.width / 2;
+            const dragCenterY = dragRect.top + dragRect.height / 2;
+            
+            return (
+                dragCenterX > targetRect.left &&
+                dragCenterX < targetRect.right &&
+                dragCenterY > targetRect.top &&
+                dragCenterY < targetRect.bottom
+            );
+        }
+
+        async function insertDisk() {
+            hasInserted = true;
+            target.classList.remove('highlight');
+            draggable.classList.add('inserting');
+            message.classList.add('show');
+            
+            // Hide the background image and show target video
+            setTimeout(() => {
+                target.style.backgroundImage = 'none';
+                const video = document.getElementById('targetVideo');
+                video.classList.add('show');
+                video.play();
+            }, 400);
+            
+            // After target video ends, play boot.mp4 in fullscreen
+            const video = document.getElementById('targetVideo');
+            video.addEventListener('ended', async () => {
+                // Show fullscreen boot video
+                fullscreenContainer.classList.add('active');
+                
+                // Request fullscreen
+                try {
+                    if (fullscreenContainer.requestFullscreen) {
+                        await fullscreenContainer.requestFullscreen();
+                    } else if (fullscreenContainer.webkitRequestFullscreen) {
+                        await fullscreenContainer.webkitRequestFullscreen();
+                    } else if (fullscreenContainer.mozRequestFullScreen) {
+                        await fullscreenContainer.mozRequestFullScreen();
+                    } else if (fullscreenContainer.msRequestFullscreen) {
+                        await fullscreenContainer.msRequestFullscreen();
+                    }
+                } catch (err) {
+                    console.log('Fullscreen request failed:', err);
+                }
+                
+                // Play boot video with sound
+                bootVideo.muted = false;
+                await bootVideo.play();
+            });
+            
+            // When boot video ends, redirect to next page
+            bootVideo.addEventListener('ended', () => {
+                window.location.href = 'next.html';
+            });
+        }
+    </script>
+</body>
+</html>
