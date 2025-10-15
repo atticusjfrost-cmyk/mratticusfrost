@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory 1</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        #backgroundGif {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1; /* Puts gif behind all content */
+            object-fit: cover; /* Ensures gif covers the entire screen */
+        }
+
+        /* Style for any content you want on top of the gif */
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        p {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 30px;
+            color: white;
+            -webkit-text-stroke: 0.05px black;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-style: bold;
+            font-size: 50px;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background GIF -->
+    <img id="backgroundGif" src="wildflowerwllpaper.gif" alt="Background">
+
+    <!-- Your page content goes here -->
+    <div class="content">
+        <h1>SPRING MEMORIES</h1>
+        
+        <p>
+            The sun rises up from the hills and I walk across the wildflower fields. 
+        </p>
+        <p>They are tall and broad and reach up to the sky. Pink and purple stain my hands.</p>
+        <p>I come here every spring.</p>
+        <p>Memories of a question infect: I've been asked how I changed, but I say them I'm just a singular road. 
+        Turn to asterios polyp moment:
+        Parmenides said that nothing can come from nothing. And, if nothing can come from nothing, then nothing begins and nothings ends. It's all one unchanging being.
+        -	Parmenidies death?
+        </p>
+    </div>
+
+</body>
+</html>

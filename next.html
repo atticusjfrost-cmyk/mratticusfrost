@@ -71,6 +71,19 @@
             z-index: 11; /* Above the error box */
         }
 
+         #yesButton3 {
+            position: absolute;
+            top: 50%; /* Adjust this to position the button over the "Yes" area */
+            left: 30%; /* Adjust this to position the button over the "Yes" area */
+            width: 80px; /* Adjust width to match the yes button area */
+            height: 40px; /* Adjust height to match the yes button area */
+            background-color: rgb(235, 12, 255);
+            border: none;
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            z-index: 11; /* Above the error box */
+        }
+
         /* Optional: Add a visible border when testing to see the clickable area */
         /* #yesButton:hover {
             border: 2px solid red;
@@ -97,6 +110,7 @@
     <!-- Invisible button positioned over the "Yes" area of the error box -->
     <button id="yesButton1"></button>
     <button id="yesButton2"></button>
+    <button id="yesButton3"></button>
     
     <audio id="errorSound" src="errorbox.mp3"></audio>
 
@@ -111,6 +125,7 @@
         const warningBox = document.getElementById('warningBox');
         const yesButton1 = document.getElementById('yesButton1');
         const yesButton2 = document.getElementById('yesButton2');
+        const yesButton3 = document.getElementById('yesButton3');
         const errorSound = document.getElementById('errorSound');
         const loadingVideo = document.getElementById('loadingVideo');
 
@@ -122,6 +137,7 @@
             // Show the yes button
             yesButton1.style.display = 'block';
             yesButton2.style.display = 'block';
+           
             
             // Play the error sound
             errorSound.play();
@@ -132,6 +148,8 @@
             // Show the warning box
             warningBox.style.display='block'
             yesButton1.style.display = 'none'
+            yesButton2.style.display = 'none'
+            yesButton3.style.display = 'block';
             errorSound.play();
            // errorBox.style.display = 'none';
            // yesButton1.style.display = 'none';
@@ -148,14 +166,24 @@
 
         yesButton2.addEventListener('click', function() {
             // Hide error box and button
-            errorBox.style.display = 'none';
-            yesButton2.style.display = 'none';
-            
+           warningBox.style.display='block'
+            yesButton1.style.display = 'none'
+            yesButton2.style.display = 'none'
+            yesButton3.style.display = 'block';
+            errorSound.play();
             // Show and play the loading video
-            loadingVideo.style.display = 'block';
-            loadingVideo.play();
+          //  loadingVideo.style.display = 'block';
+        //    loadingVideo.play();
             
             // When video ends, go to fourt.html
+        //    loadingVideo.addEventListener('ended', function() {
+      //          window.location.href = 'fourt.html';
+       //     });
+        });
+
+        yesButton3.addEventListener('click', function() {
+            loadingVideo.style.display = 'block';
+            loadingVideo.play();
             loadingVideo.addEventListener('ended', function() {
                 window.location.href = 'fourt.html';
             });
