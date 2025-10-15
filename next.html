@@ -1,0 +1,166 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-image: url('nextwallpaper.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+
+        #memoryDrive {
+            position: absolute;
+            width: 15px; /* Change this to adjust memory drive size */
+            height: auto;
+            top: 50%; /* Change this to adjust vertical position */
+            left: 50%; /* Change this to adjust horizontal position */
+            transform: translate(-50%, -50%); /* Centers the image at the position */
+            cursor: pointer;
+        }
+
+        #errorBox {
+            position: absolute;
+            width: 150px; /* Change this to adjust error box size */
+            height: auto;
+            top: 50%; /* Change this to adjust vertical position */
+            left: 50%; /* Change this to adjust horizontal position */
+            transform: translate(-50%, -50%); /* Centers the image at the position */
+            display: none; /* Hidden by default */
+            z-index: 10; /* Appears above other elements */
+        }
+        #warningBox {
+            position: absolute;
+            width: 150px; /* Change this to adjust error box size */
+            height: auto;
+            top: 50%; /* Change this to adjust vertical position */
+            left: 50%; /* Change this to adjust horizontal position */
+            transform: translate(-50%, -50%); /* Centers the image at the position */
+            display: none; /* Hidden by default */
+            z-index: 10; /* Appears above other elements */
+        }
+        
+
+        #yesButton1 {
+            position: absolute;
+            top: 50%; /* Adjust this to position the button over the "Yes" area */
+            left: 50%; /* Adjust this to position the button over the "Yes" area */
+            width: 80px; /* Adjust width to match the yes button area */
+            height: 40px; /* Adjust height to match the yes button area */
+            background-color: yellow;
+            border: none;
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            z-index: 11; /* Above the error box */
+        }
+
+         #yesButton2 {
+            position: absolute;
+            top: 50%; /* Adjust this to position the button over the "Yes" area */
+            left: 30%; /* Adjust this to position the button over the "Yes" area */
+            width: 80px; /* Adjust width to match the yes button area */
+            height: 40px; /* Adjust height to match the yes button area */
+            background-color: green;
+            border: none;
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            z-index: 11; /* Above the error box */
+        }
+
+        /* Optional: Add a visible border when testing to see the clickable area */
+        /* #yesButton:hover {
+            border: 2px solid red;
+        } */
+
+        #loadingVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 20;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <img id="memoryDrive" src="memorydrive.png" alt="Memory Drive" />
+    <img id="errorBox" src="errorbox.png" alt="Error Box" />
+    <img id="warningBox" src="warning.png" alt="Warning Box" />
+    
+    <!-- Invisible button positioned over the "Yes" area of the error box -->
+    <button id="yesButton1"></button>
+    <button id="yesButton2"></button>
+    
+    <audio id="errorSound" src="errorbox.mp3"></audio>
+
+    
+    <video id="loadingVideo" src="memoryloading.mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const memoryDrive = document.getElementById('memoryDrive');
+        const errorBox = document.getElementById('errorBox');
+        const warningBox = document.getElementById('warningBox');
+        const yesButton1 = document.getElementById('yesButton1');
+        const yesButton2 = document.getElementById('yesButton2');
+        const errorSound = document.getElementById('errorSound');
+        const loadingVideo = document.getElementById('loadingVideo');
+
+        // When memory drive is clicked
+        memoryDrive.addEventListener('click', function() {
+            // Show the error box
+            errorBox.style.display = 'block';
+            
+            // Show the yes button
+            yesButton1.style.display = 'block';
+            yesButton2.style.display = 'block';
+            
+            // Play the error sound
+            errorSound.play();
+        });
+
+        // When yes button is clicked
+        yesButton1.addEventListener('click', function() {
+            // Show the warning box
+            warningBox.style.display='block'
+            yesButton1.style.display = 'none'
+            errorSound.play();
+           // errorBox.style.display = 'none';
+           // yesButton1.style.display = 'none';
+            
+            // Show and play the loading video
+           // loadingVideo.style.display = 'block';
+          //  loadingVideo.play();
+            
+            // When video ends, go to fourt.html
+          //  loadingVideo.addEventListener('ended', function() {
+       //         window.location.href = 'fourt.html';
+     //       });
+        });
+
+        yesButton2.addEventListener('click', function() {
+            // Hide error box and button
+            errorBox.style.display = 'none';
+            yesButton2.style.display = 'none';
+            
+            // Show and play the loading video
+            loadingVideo.style.display = 'block';
+            loadingVideo.play();
+            
+            // When video ends, go to fourt.html
+            loadingVideo.addEventListener('ended', function() {
+                window.location.href = 'fourt.html';
+            });
+        });
+    </script>
+
+</body>
+</html>
