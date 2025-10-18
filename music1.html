@@ -58,6 +58,7 @@
         .hidden {
             display: none;
         }
+        
     </style>
 </head>
 <body>
@@ -72,7 +73,6 @@
     <button id="playButton">Click to Play Video</button>
 
     <script>
-        const video = document.getElementById('mainVideo');
         const playBtn = document.getElementById('playButton');
         const container = document.getElementById('videoContainer');
 
@@ -135,11 +135,49 @@
             }
         });
 
-        // Redirect when video ends
-        video.addEventListener('ended', () => {
-            // Change this to your target page
-            window.location.href = 'summer.html';
-        });
+const button = document.createElement('button');
+button.textContent = 'Next Memory';
+button.style.position = 'fixed';
+button.style.top = '50%';
+button.style.left = '50%';
+button.style.transform = 'translate(-50%, -50%)';
+button.style.padding = '20px 40px';
+button.style.fontSize = '18px';
+button.style.background = '#fff';
+button.style.border = 'none';
+button.style.borderRadius = '8px';
+button.style.cursor = 'pointer';
+button.style.zIndex = '10';
+button.style.fontWeight = 'bold';
+button.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+button.style.display = 'none';
+
+button.addEventListener('mouseover', () => {
+    button.style.background = '#f0f0f0';
+});
+
+button.addEventListener('mouseout', () => {
+    button.style.background = '#fff';
+});
+
+button.addEventListener('click', () => {
+    window.location.href = 'summer.html';
+});
+
+document.body.appendChild(button);
+
+const video = document.getElementById('mainVideo');
+video.addEventListener('ended', () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+    setTimeout(() => {
+        button.style.display = 'block';
+    }, 3000);
+});
+        
     </script>
 </body>
+
+
 </html>
