@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('springjogger.png');
+            background-image: url('winterjogger.png');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -15,7 +15,7 @@
         }
 
         body.hover-active {
-            background-image: url('springjogger2.png');
+            background-image: url('winterjogger2.png');
         }
 
         #backgroundGif {
@@ -66,10 +66,13 @@
         }, 4000);
 
         notification.addEventListener('click', function() {
-            setTimeout(function() {
-        window.location.href = 'spring.html';
+
+             setTimeout(function() {
+        window.location.href = 'winter.html';
     }, 3000);
+            
         });
+        
 
         // Change background when hovering over notification
         notification.addEventListener('mouseenter', function() {
@@ -81,8 +84,8 @@
         });
 
         // Change notification position here:
-        notification.style.top = '400px';
-        notification.style.right = '500px';
+        notification.style.top = '580px';
+        notification.style.right = '600px';
     </script>
 </body>
 </html>

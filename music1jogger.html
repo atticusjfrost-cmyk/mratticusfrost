@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('springjogger.png');
+            background-image: url('music1jogger.png');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -15,7 +15,7 @@
         }
 
         body.hover-active {
-            background-image: url('springjogger2.png');
+            background-image: url('music1jogger2.png');
         }
 
         #backgroundGif {
@@ -65,12 +65,13 @@
             notification.style.display = 'block';
         }, 4000);
 
-        notification.addEventListener('click', function() {
-            setTimeout(function() {
-        window.location.href = 'spring.html';
-    }, 3000);
-        });
+       notification.addEventListener('click', function() {
 
+             setTimeout(function() {
+        window.location.href = 'music1.html';
+    }, 3000);
+            
+        });
         // Change background when hovering over notification
         notification.addEventListener('mouseenter', function() {
             body.classList.add('hover-active');
@@ -81,7 +82,7 @@
         });
 
         // Change notification position here:
-        notification.style.top = '400px';
+        notification.style.top = '300px';
         notification.style.right = '500px';
     </script>
 </body>

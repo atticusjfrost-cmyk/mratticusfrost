@@ -15,79 +15,97 @@
 
         #memoryDrive {
             position: absolute;
-            width: 15px; /* Change this to adjust memory drive size */
+            width: 15px;
             height: auto;
-            top: 50%; /* Change this to adjust vertical position */
-            left: 50%; /* Change this to adjust horizontal position */
-            transform: translate(-50%, -50%); /* Centers the image at the position */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             cursor: pointer;
         }
 
         #errorBox {
             position: absolute;
-            width: 150px; /* Change this to adjust error box size */
+            width: 150px;
             height: auto;
-            top: 50%; /* Change this to adjust vertical position */
-            left: 50%; /* Change this to adjust horizontal position */
-            transform: translate(-50%, -50%); /* Centers the image at the position */
-            display: none; /* Hidden by default */
-            z-index: 10; /* Appears above other elements */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
         }
+
         #warningBox {
             position: absolute;
-            width: 150px; /* Change this to adjust error box size */
+            width: 150px;
             height: auto;
-            top: 50%; /* Change this to adjust vertical position */
-            left: 50%; /* Change this to adjust horizontal position */
-            transform: translate(-50%, -50%); /* Centers the image at the position */
-            display: none; /* Hidden by default */
-            z-index: 10; /* Appears above other elements */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
         }
-        
+
+        #chooseBox {
+            position: absolute;
+            width: 150px;
+            height: auto;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+        }
+
+        #selectDropdown {
+            position: absolute;
+            top: 50%;
+            left: 45%;
+           /* transform: translate(-50%, -50%); */
+            width: 20px;
+            height: 10px;
+            display: none;
+            z-index: 11;
+            cursor: pointer;
+        }
 
         #yesButton1 {
             position: absolute;
-            top: 50%; /* Adjust this to position the button over the "Yes" area */
-            left: 50%; /* Adjust this to position the button over the "Yes" area */
-            width: 80px; /* Adjust width to match the yes button area */
-            height: 40px; /* Adjust height to match the yes button area */
-            background-color: yellow;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 40px;
+            background-color: rgba(255, 255, 0, 0);
             border: none;
             cursor: pointer;
-            display: none; /* Hidden by default */
-            z-index: 11; /* Above the error box */
+            display: none;
+            z-index: 11;
         }
 
-         #yesButton2 {
+        #yesButton2 {
             position: absolute;
-            top: 50%; /* Adjust this to position the button over the "Yes" area */
-            left: 30%; /* Adjust this to position the button over the "Yes" area */
-            width: 80px; /* Adjust width to match the yes button area */
-            height: 40px; /* Adjust height to match the yes button area */
-            background-color: green;
+            top: 50%;
+            left: 30%;
+            width: 80px;
+            height: 40px;
+            background-color: rgba(0, 128, 0, 0);
             border: none;
             cursor: pointer;
-            display: none; /* Hidden by default */
-            z-index: 11; /* Above the error box */
+            display: none;
+            z-index: 11;
         }
 
-         #yesButton3 {
+        #yesButton3 {
             position: absolute;
-            top: 50%; /* Adjust this to position the button over the "Yes" area */
-            left: 30%; /* Adjust this to position the button over the "Yes" area */
-            width: 80px; /* Adjust width to match the yes button area */
-            height: 40px; /* Adjust height to match the yes button area */
-            background-color: rgb(235, 12, 255);
+            top: 50%;
+            left: 30%;
+            width: 80px;
+            height: 40px;
+            background-color: rgba(235, 12, 255, 0);
             border: none;
             cursor: pointer;
-            display: none; /* Hidden by default */
-            z-index: 11; /* Above the error box */
+            display: none;
+            z-index: 11;
         }
-
-        /* Optional: Add a visible border when testing to see the clickable area */
-        /* #yesButton:hover {
-            border: 2px solid red;
-        } */
 
         #loadingVideo {
             position: fixed;
@@ -106,15 +124,19 @@
     <img id="memoryDrive" src="memorydrive.png" alt="Memory Drive" />
     <img id="errorBox" src="errorbox.png" alt="Error Box" />
     <img id="warningBox" src="warning.png" alt="Warning Box" />
+    <img id="chooseBox" src="choosebox.png" alt="Choose Box" />
     
-    <!-- Invisible button positioned over the "Yes" area of the error box -->
     <button id="yesButton1"></button>
     <button id="yesButton2"></button>
     <button id="yesButton3"></button>
     
+    <select id="selectDropdown">
+        <option value="">Select an option</option>
+        <option value="tempest">The Tempest</option>
+    </select>
+    
     <audio id="errorSound" src="errorbox.mp3"></audio>
 
-    
     <video id="loadingVideo" src="memoryloading.mp4">
         Your browser does not support the video tag.
     </video>
@@ -129,64 +151,50 @@
         const errorSound = document.getElementById('errorSound');
         const loadingVideo = document.getElementById('loadingVideo');
 
-        // When memory drive is clicked
         memoryDrive.addEventListener('click', function() {
-            // Show the error box
             errorBox.style.display = 'block';
-            
-            // Show the yes button
             yesButton1.style.display = 'block';
             yesButton2.style.display = 'block';
-           
-            
-            // Play the error sound
             errorSound.play();
         });
 
-        // When yes button is clicked
         yesButton1.addEventListener('click', function() {
-            // Show the warning box
-            warningBox.style.display='block'
-            yesButton1.style.display = 'none'
-            yesButton2.style.display = 'none'
+            warningBox.style.display = 'block';
+            yesButton1.style.display = 'none';
+            yesButton2.style.display = 'none';
             yesButton3.style.display = 'block';
             errorSound.play();
-           // errorBox.style.display = 'none';
-           // yesButton1.style.display = 'none';
-            
-            // Show and play the loading video
-           // loadingVideo.style.display = 'block';
-          //  loadingVideo.play();
-            
-            // When video ends, go to fourt.html
-          //  loadingVideo.addEventListener('ended', function() {
-       //         window.location.href = 'fourt.html';
-     //       });
         });
 
         yesButton2.addEventListener('click', function() {
-            // Hide error box and button
-           warningBox.style.display='block'
-            yesButton1.style.display = 'none'
-            yesButton2.style.display = 'none'
+            warningBox.style.display = 'block';
+            yesButton1.style.display = 'none';
+            yesButton2.style.display = 'none';
             yesButton3.style.display = 'block';
             errorSound.play();
-            // Show and play the loading video
-          //  loadingVideo.style.display = 'block';
-        //    loadingVideo.play();
-            
-            // When video ends, go to fourt.html
-        //    loadingVideo.addEventListener('ended', function() {
-      //          window.location.href = 'fourt.html';
-       //     });
         });
 
+        const chooseBox = document.getElementById('chooseBox');
+        const selectDropdown = document.getElementById('selectDropdown');
+
         yesButton3.addEventListener('click', function() {
-            loadingVideo.style.display = 'block';
-            loadingVideo.play();
-            loadingVideo.addEventListener('ended', function() {
-                window.location.href = 'fourt.html';
-            });
+            warningBox.style.display = 'none';
+            yesButton3.style.display = 'none';
+            chooseBox.style.display = 'block';
+            selectDropdown.style.display = 'block';
+            errorSound.play();
+        });
+
+        selectDropdown.addEventListener('change', function() {
+            if (this.value === 'tempest') {
+                chooseBox.style.display = 'none';
+                selectDropdown.style.display = 'none';
+                loadingVideo.style.display = 'block';
+                loadingVideo.play();
+                loadingVideo.addEventListener('ended', function() {
+                    window.location.href = 'fourt.html';
+                });
+            }
         });
     </script>
 
