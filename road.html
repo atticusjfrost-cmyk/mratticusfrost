@@ -1,26 +1,183 @@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Fullscreen Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #000;
+        }
+
+        #videoContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        #mainVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #playButton {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 18px;
+            background: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 10;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #playButton:hover {
+            background: #f0f0f0;
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+    </style>
 </head>
 <body>
-    <p> <b> Note: this will be audio i reckon </b></p>
-    Let me tell you something:
-I was driving down this long black road. It was a looooong road, going like waves. As
-I was riding down in my Cadillac the rain would beat down on my roof and it was like
-I had a little marching band of my own. And all the while I could hear a kind of
-humming. And I thought that if I’d follow that humming it would lead me to you.
-I decided that I will keep cowboying on west until I reach the mines where I’d try my
-hand at panning for gold.
-I’d look up into my rear-view mirror, and I’d see those miles spin out long behind me,
-and then I’d look back straight well that old black road just kept on stretching on. And
-the rain would be stretched and streaked across my windshield before it would pool
-in the cowl of the car below. And still I had this humming all around me and I
-wondered how much longer before this humming were to hit the right note and
-shatter me from the inside out.
-And I’d look at your empty seat beside me. Your keepsake is there, beneath it.
-And let me tell you: there were tears in my eyes.
+    
+    <div id="videoContainer">
+        <video id="mainVideo" preload="auto">
+            <source src="road.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <button id="playButton">Click to Play Video</button>
+
+    <script>
+        const playBtn = document.getElementById('playButton');
+        const container = document.getElementById('videoContainer');
+
+        // Try to autoplay on load
+        window.addEventListener('load', () => {
+            attemptAutoplay();
+        });
+
+        async function attemptAutoplay() {
+            try {
+                // Try to play with sound
+                video.muted = false;
+                await video.play();
+                
+                // If successful, request fullscreen
+                if (container.requestFullscreen) {
+                    await container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    await container.webkitRequestFullscreen();
+                } else if (container.mozRequestFullScreen) {
+                    await container.mozRequestFullScreen();
+                } else if (container.msRequestFullscreen) {
+                    await container.msRequestFullscreen();
+                }
+                
+                playBtn.classList.add('hidden');
+            } catch (err) {
+                // Autoplay failed, show button
+                console.log('Autoplay prevented:', err);
+                playBtn.classList.remove('hidden');
+            }
+        }
+
+        playBtn.addEventListener('click', async () => {
+            try {
+                video.muted = false;
+                await video.play();
+                
+                // Request fullscreen
+                if (container.requestFullscreen) {
+                    await container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    await container.webkitRequestFullscreen();
+                } else if (container.mozRequestFullScreen) {
+                    await container.mozRequestFullScreen();
+                } else if (container.msRequestFullscreen) {
+                    await container.msRequestFullscreen();
+                }
+                
+                playBtn.classList.add('hidden');
+            } catch (err) {
+                console.error('Error playing video:', err);
+            }
+        });
+
+        // Handle fullscreen exit
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                video.pause();
+            }
+        });
+
+const button = document.createElement('button');
+button.textContent = 'Next Memory';
+button.style.position = 'fixed';
+button.style.top = '50%';
+button.style.left = '50%';
+button.style.transform = 'translate(-50%, -50%)';
+button.style.padding = '20px 40px';
+button.style.fontSize = '18px';
+button.style.background = '#fff';
+button.style.border = 'none';
+button.style.borderRadius = '8px';
+button.style.cursor = 'pointer';
+button.style.zIndex = '10';
+button.style.fontWeight = 'bold';
+button.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+button.style.display = 'none';
+
+button.addEventListener('mouseover', () => {
+    button.style.background = '#f0f0f0';
+});
+
+button.addEventListener('mouseout', () => {
+    button.style.background = '#fff';
+});
+
+button.addEventListener('click', () => {
+    window.location.href = 'music2jogger.html';
+});
+
+document.body.appendChild(button);
+
+const video = document.getElementById('mainVideo');
+video.addEventListener('ended', () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    }
+    setTimeout(() => {
+        button.style.display = 'block';
+    }, 3000);
+});
+        
+    </script>
 </body>
-<button onclick="window.location.href='music2jogger.html';">Go to music again</button>
+
+
 </html>

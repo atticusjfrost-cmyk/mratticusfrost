@@ -1,31 +1,125 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Word by Word Display</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        #display {
+            min-height: 300px;
+            padding: 30px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            font-size: 18px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        
+        #nextButton {
+            display: none;
+            margin: 30px auto;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-family: 'Courier New', monospace;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        #nextButton:hover {
+            background-color: #357abd;
+        }
+        
+        #nextButton.show {
+            display: block;
+        }
+        
+        .flash {
+            animation: flashRed 0.5s;
+        }
+        
+        @keyframes flashRed {
+            0%, 100% { background-color: #1a1a1a; }
+            50% { background-color: #ff0000; }
+        }
+        
+        #errorImage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            z-index: 1000;
+        }
+        
+        #errorImage.show {
+            display: block;
+        }
+    </style>
 </head>
-<p><b> this one is still wip</b></p>
 <body>
-    EXT. HOUSE - DAY
-We see ME holding a door up to a doorframe. ME puts the door down and brings out
-a measuring tape, recording the size of the doorframe and then of the door.
-ME
-It’s not going to fit.
-MEMORY RE-DO. On screen: this is not how it went…
-EXT. HOUSE – DAY
-We see ME, dressed in old and dirtied clothes. ME holds the door up to the door
-frame and holds it there for a beat. ME squints and lowers the door onto the ground
-before taking measurements of both door and doorframe.
-ME
-This won’t fit.
+    <div id="display"></div>
+    <button id="nextButton">Next Memory</button>
+    <img id="errorImage" src="newerrorbow.png" alt="Error">
 
-V.O
-It’s just a matter of paying attention.
-[again]
-I stand outside in my hand-me-down clothes, paint splatters on my pants and shirt.
-The sun is big and mean, it stream on down through the sheets that have been hung
-to dry, creating a soft white glow if one were to stand behind.
-I lift a heavy board of wood up to my door frame.
+    <script>
+        const text = `EXT. HOUSE - DAY 
+We see ME, dressed in old and dirtied clothes. ME holds the door up to the door frame and holds it there for a beat. ME squints and lowers the door onto the ground before taking measurements of both door and doorframe.
+                                ME
+                        This won't fit.
+Me puts the plank down.`;
+
+        // CHANGE THIS VALUE TO CONTROL SPEED (in milliseconds)
+        const SPEED = 50; // 500ms between each word
+        
+        const words = text.split(/(\s+)/);
+        let currentIndex = 0;
+        
+        const display = document.getElementById('display');
+        const nextButton = document.getElementById('nextButton');
+        const errorImage = document.getElementById('errorImage');
+        
+        function displayNextWord() {
+            if (currentIndex < words.length) {
+                display.textContent += words[currentIndex];
+                currentIndex++;
+            } else {
+                clearInterval(intervalId);
+                // Show the Next Memory button after all words are displayed
+                nextButton.classList.add('show');
+            }
+        }
+        
+        nextButton.addEventListener('click', () => {
+            // Flash red
+            document.body.classList.add('flash');
+            
+            // Show error image after flash starts
+            setTimeout(() => {
+                errorImage.classList.add('show');
+            }, 250);
+            
+            // Remove flash animation class after it completes
+            setTimeout(() => {
+                document.body.classList.remove('flash');
+            }, 500);
+        });
+        
+        const intervalId = setInterval(displayNextWord, SPEED);
+    </script>
 </body>
-<button onclick="window.location.href='autumnjogger.html';">autumn</button>
 </html>
